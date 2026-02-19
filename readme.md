@@ -60,5 +60,13 @@ pip install pytest
 测试函数以 test_ 开头；
 断言使用基本的 assert 即可；
 
+安装 Flask-SQLAlchemy和postgresql数据库驱动
+pip install flask-sqlalchemy psycopg2
 
+1.env配置数据库连接信息
+2.config.py设置默认配置(default_config)
+3.database_extension.py初始化SQLAlchemy对象
+4./internal/server http.py指定flask框架绑定的数据库类型
+5./app/http app.py 使用flask时给框架传数据库实例参数，通过injector容器取实例对象injector.get(SQLAlchemy) (
+ExtensionModule扩展模块--依赖注入的另一种方式，将database_extension.py创建的SQLAlchemy数据库实例与传递的db参数进行绑定，以依赖注入的方式获取数据库实例)
 
