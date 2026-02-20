@@ -2,10 +2,10 @@
 # @Time    : 2026-02-16 14:38
 # @Author  : zhaowintoo@gmail.com
 # @File    : app.py
-from flask_sqlalchemy import SQLAlchemy
 from injector import Module, Binder
 
 from internal.extension.database_extension import db
+from pkg.sqlalchemy import SQLAlchemy
 
 
 class ExtensionModule(Module):
