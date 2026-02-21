@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-@Time    : 2024/4/5 18:50
-@Author  : thezehui@gmail.com
+@Time    : 2025/4/5 18:50
+@Author  : zhaowintoo@gmail.com
 @File    : default_config.py
 """
 # 应用默认配置项
 DEFAULT_CONFIG = {
     # wft配置
     "WTF_CSRF_ENABLED": "False",
-    
+
     # SQLAlchemy数据库配置
     "SQLALCHEMY_DATABASE_URI": "",
     "SQLALCHEMY_POOL_SIZE": 30,

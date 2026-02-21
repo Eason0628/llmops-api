@@ -8,7 +8,9 @@ import uuid
 from dataclasses import dataclass
 
 from injector import inject
-from openai import OpenAI
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_openai import ChatOpenAI
 
 from internal.schema.app_schema import CompletionReq
 from internal.service import AppService
@@ -42,26 +44,38 @@ class AppHandler:
     # DeepSeek
     def completion(self):
         """聊天接口"""
-        # 1.从接口中获取输入,校验输入参数query
+
+        # 1.校验输入参数
         req = CompletionReq()
         if not req.validate():
             return validate_error_json(req.errors)
 
-        # 2.创建openai客户端，并发起请求
-        client = OpenAI(
-            api_key=os.getenv("DEEPSEEK_API_KEY"),
-            base_url=os.getenv("DEEPSEEK_BASE_URL"))
-        response = client.chat.completions.create(
-            model="deepseek-chat",
-            messages=[
-                {"role": "system", "content": "你是DeepSeek开发的聊天机器人，请根据用户的输入回复对应的信息"},
-                {"role": "user", "content": req.query.data},
-            ],
-            stream=False
-        )
-        content = response.choices[0].message.content
+        # 2.构建 Prompt（等价于 system + user messages）
+        prompt = ChatPromptTemplate.from_messages([
+            ("system", "你是DeepSeek开发的聊天机器人，请根据用户的输入回复对应的信息"),
+            ("user", "{query}")
+        ])
 
-        # 3.得到请求结果，然后将openai的结果返回给前端
+        # 3.构建 LLM（DeepSeek）
+        llm = ChatOpenAI(
+            model="deepseek-chat",
+            api_key=os.getenv("DEEPSEEK_API_KEY"),
+            base_url=os.getenv("DEEPSEEK_BASE_URL"),
+            temperature=0
+        )
+
+        # 4.输出解析器
+        parser = StrOutputParser()
+
+        # 5.构建链
+        chain = prompt | llm | parser
+
+        # 6.调用链
+        content = chain.invoke({
+            "query": req.query.data
+        })
+
+        # 7.返回结果
         return success_json({"content": content})
 
     # OPENAI

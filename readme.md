@@ -42,8 +42,6 @@ pip install -r requirements.txt
 在postgresql数据库中创建数据库llmops,启动/关闭数据库服务
 pg_ctl.exe start/stop -D "D:\2025\D_Coding\llmops\llmops-api\env\pgdata"
 
-## 2-3
-
 python安装openai依赖
 pip install openai
 
@@ -63,6 +61,10 @@ pip install pytest
 安装 Flask-SQLAlchemy和postgresql数据库驱动
 pip install flask-sqlalchemy psycopg2
 
+## 2-3
+
+LangChain
+pip install langchain==0.2.1 langchain-community==0.2.1
 
 
 
