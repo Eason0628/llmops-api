@@ -66,5 +66,6 @@ pip install flask-sqlalchemy psycopg2
 LangChain
 pip install langchain==0.2.1 langchain-community==0.2.1
 
+安装pip install flask-cors处理跨域请求
 
 

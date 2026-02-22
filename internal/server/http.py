@@ -6,6 +6,7 @@
 import os
 
 from flask import Flask
+from flask_cors import CORS
 
 from config import Config
 from internal.exception import CustomException
@@ -36,6 +37,16 @@ class Http(Flask):
 
         # 5.注册应用路由
         router.register_router(self)
+
+        # 5.解决前后端跨域问题
+        CORS(self, resources={
+            r"/*": {
+                "origins": "*",
+                "supports_credentials": True,
+                # "methods": ["GET", "POST"],
+                # "allow_headers": ["Content-Type"],
+            }
+        })
 
     def _register_error_handler(self, error: Exception):
         # 1.异常信息是不是我们的自定义异常，如果是可以提取message和code等信息
