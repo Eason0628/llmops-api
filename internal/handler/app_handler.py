@@ -42,7 +42,7 @@ class AppHandler:
         return success_message(f"应用已经成功删除，id为:{app.id}")
 
     # DeepSeek
-    def completion(self):
+    def debug(self, app_id: uuid.UUID):
         """聊天接口"""
 
         # 1.校验输入参数
