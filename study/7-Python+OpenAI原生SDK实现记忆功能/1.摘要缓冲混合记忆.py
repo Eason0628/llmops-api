@@ -22,7 +22,7 @@ class ConversationSummaryBufferMemory:
         self.summary = summary
         self.chat_histories = [] if chat_histories is None else chat_histories
         self.max_tokens = max_tokens
-        self._client = OpenAI(api_key="sk-1bdb8cb5c94847718cc4d0958bdd0d6d", base_url="https://api.deepseek.com")
+        self._client = OpenAI(api_key="**", base_url="https://api.deepseek.com")
 
     @classmethod
     def get_num_tokens(cls, query: str) -> int:
