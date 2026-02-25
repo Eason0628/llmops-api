@@ -68,4 +68,6 @@ pip install langchain==0.2.1 langchain-community==0.2.1
 
 安装pip install flask-cors处理跨域请求
 
+安装langchain-community依赖，使用FileChatMessageHistory,PostgresChatMessageHistory
+pip install langchain langchain-community
 
