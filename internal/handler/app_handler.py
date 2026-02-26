@@ -6,10 +6,14 @@
 import os
 import uuid
 from dataclasses import dataclass
+from operator import itemgetter
 
 from injector import inject
+from langchain_classic.memory import ConversationBufferWindowMemory
+from langchain_community.chat_message_histories import FileChatMessageHistory
 from langchain_core.output_parsers import StrOutputParser
-from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_core.runnables import RunnablePassthrough, RunnableLambda
 from langchain_openai import ChatOpenAI
 
 from internal.schema.app_schema import CompletionReq
@@ -50,13 +54,23 @@ class AppHandler:
         if not req.validate():
             return validate_error_json(req.errors)
 
-        # 2.构建 Prompt（等价于 system + user messages）
+        # 2.创建prompt与记忆
         prompt = ChatPromptTemplate.from_messages([
-            ("system", "你是DeepSeek开发的聊天机器人，请根据用户的输入回复对应的信息"),
-            ("user", "{query}")
+            ("system", "你是一个强大的聊天机器人，能根据用户的提问回复对应的问题"),
+            # MessagesPlaceholder是一个占位符，用于在prompt中插入记忆
+            MessagesPlaceholder("history"),
+            ("human", "{query}"),
         ])
+        # 3.创建记忆组件ConversationBufferWindowMemory(一种记忆组件)
+        memory = ConversationBufferWindowMemory(
+            k=3,
+            input_key="query",
+            output_key="output",
+            return_messages=True,
+            chat_memory=FileChatMessageHistory("./storage/memory/chat_history.txt"),
+        )
 
-        # 3.构建 LLM（DeepSeek）
+        # 4.构建 LLM
         llm = ChatOpenAI(
             model="deepseek-chat",
             api_key=os.getenv("DEEPSEEK_API_KEY"),
@@ -64,18 +78,22 @@ class AppHandler:
             temperature=0
         )
 
-        # 4.输出解析器
+        # 5.输出解析器
         parser = StrOutputParser()
 
-        # 5.构建链
-        chain = prompt | llm | parser
+        # 6.构建链
+        chain = (RunnablePassthrough.assign(
+            # 这里是将memory.load_memory_variables的结果中的"history"键对应的值赋值给"history"键
+            # | itemgetter("history")这里是将memory.load_memory_variables的结果中的"history"键对应的值提取出来传递给后续的prompt
+            history=RunnableLambda(memory.load_memory_variables) | itemgetter("history")
+        ) | prompt | llm | parser)
 
-        # 6.调用链
-        content = chain.invoke({
-            "query": req.query.data
-        })
-
-        # 7.返回结果
+        # 7.调用链生成内容
+        chain_input = {"query": req.query.data}
+        content = chain.invoke(chain_input)
+        #  保存用户的输入和模型的输出到记忆中
+        memory.save_context(chain_input, {"output": content})
+        # 8.返回结果
         return success_json({"content": content})
 
     # OPENAI
