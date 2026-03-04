@@ -8,7 +8,7 @@ from langchain_huggingface import HuggingFaceEmbeddings
 dotenv.load_dotenv()
 
 embedding = HuggingFaceEmbeddings(
-    model_name="sentence-transformers/all-MiniLM-L6-v2",
+    model_name="shibing624/text2vec-base-chinese",
     cache_folder="./embeddings/"
 )
 
@@ -23,5 +23,5 @@ db = FAISS.from_texts(["笨笨是一只很喜欢睡觉的猫咪",
                        "我们一起计划了一次周末的野餐，希望天气能好。",
                        "我的狗喜欢追逐球，看起来非常开心。"], embedding)
 # print(db.index.ntotal)  # 这里打印的是向量数据库中的总向量数量
-# print(db.similarity_search_with_relevance_scores("我养了一只猫，叫笨笨"))
-print(db.index_to_docstore_id)
+print(db.similarity_search_with_relevance_scores("我养了一只猫，叫笨笨"))
+# print(db.index_to_docstore_id)
