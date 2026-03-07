@@ -7,7 +7,6 @@ import weaviate
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_weaviate import WeaviateVectorStore
 from weaviate.auth import Auth
-from weaviate.collections.classes.filters import Filter
 
 dotenv.load_dotenv()
 
@@ -59,14 +58,14 @@ db = WeaviateVectorStore(
 )
 
 # 4.添加数据
-# ids = db.add_texts(texts, metadatas)
-# print(ids)
+ids = db.add_texts(texts, metadatas)
+print(ids)
 
 # 5.执行相似性搜索
 # print(db.similarity_search_with_score("笨笨"))
 
-filters = Filter.by_property("page").greater_or_equal(5)
-print(db.similarity_search_with_score("笨笨", filters=filters))
+# filters = Filter.by_property("page").greater_or_equal(5)
+# print(db.similarity_search_with_score("笨笨", filters=filters))
 # client.close()
 
 # retriever = db.as_retriever()
