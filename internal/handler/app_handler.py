@@ -20,7 +20,7 @@ from langchain_core.tracers import Run
 from langchain_openai import ChatOpenAI
 
 from internal.schema.app_schema import CompletionReq
-from internal.service import AppService
+from internal.service import AppService, VectorDatabaseService
 from pkg.response import success_json, validate_error_json, success_message
 
 
@@ -28,8 +28,8 @@ from pkg.response import success_json, validate_error_json, success_message
 @dataclass
 class AppHandler:
     """应用控制器"""
-
     app_service: AppService
+    vector_database_service: VectorDatabaseService
 
     def create_app(self):
         """调用服务创建新的APP记录"""
@@ -75,8 +75,9 @@ class AppHandler:
             return validate_error_json(req.errors)
 
         # 2.创建prompt与记忆
+        system_prompt = "你是一个强大的聊天机器人，能根据对应的上下文和历史对话信息回复用户问题。\n\n<context>{context}</context>"
         prompt = ChatPromptTemplate.from_messages([
-            ("system", "你是一个强大的聊天机器人，能根据用户的提问回复对应的问题"),
+            ("system", system_prompt),
             # MessagesPlaceholder是一个占位符，用于在prompt中插入记忆
             MessagesPlaceholder("history"),
             ("human", "{query}"),
@@ -99,8 +100,10 @@ class AppHandler:
         )
 
         # 5.构建链
+        retriever = self.vector_database_service.get_retriever() | self.vector_database_service.combine_documents
         chain = (RunnablePassthrough.assign(
-            history=RunnableLambda(self._load_memory_variables) | itemgetter("history")
+            history=RunnableLambda(self._load_memory_variables) | itemgetter("history"),
+            context=itemgetter("query") | retriever
         ) | prompt | llm | StrOutputParser()).with_listeners(
             on_end=self._save_context)  # with_listeners 用于在链的执行过程中监听事件，这里监听 on_end 事件，即链执行结束时调用 _save_context 方法
 
