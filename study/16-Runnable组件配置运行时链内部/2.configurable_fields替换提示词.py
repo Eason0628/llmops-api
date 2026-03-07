@@ -1,10 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-@Time    : 2024/6/4 15:22
-@Author  : thezehui@gmail.com
-@File    : 2.configurable_fields替换提示词.py
-"""
+
 from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import ConfigurableField
 

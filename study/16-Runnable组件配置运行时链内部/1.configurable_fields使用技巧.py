@@ -1,10 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-@Time    : 2024/6/4 15:05
-@Author  : thezehui@gmail.com
-@File    : 1.configurable_fields使用技巧.py
-"""
+
 import dotenv
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import PromptTemplate

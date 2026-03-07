@@ -1,10 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-@Time    : 2024/6/6 11:37
-@Author  : thezehui@gmail.com
-@File    : 2.Runnable回退机制.py
-"""
 import dotenv
 from langchain_community.chat_models.baidu_qianfan_endpoint import QianfanChatEndpoint
 from langchain_core.output_parsers import StrOutputParser
