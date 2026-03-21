@@ -1,8 +1,10 @@
 # LLMOps 项目 API 文档
 
-应用 API 接口统一以 JSON 格式返回，并且包含 3 个字段：`code`、`data` 和 `message`，分别代表`业务状态码`、`业务数据`和`接口附加信息`。
+应用 API 接口统一以 JSON 格式返回，并且包含 3 个字段：`code`、`data` 和 `message`，分别代表`业务状态码`、`业务数据`和
+`接口附加信息`。
 
-`业务状态码`共有 6 种，其中只有 `success(成功)` 代表业务操作成功，其他 5 种状态均代表失败，并且失败时会附加相关的信息：`fail(通用失败)`、`not_found(未找到)`、`unauthorized(未授权)`、`forbidden(无权限)`和`validate_error(数据验证失败)`。
+`业务状态码`共有 6 种，其中只有 `success(成功)` 代表业务操作成功，其他 5 种状态均代表失败，并且失败时会附加相关的信息：
+`fail(通用失败)`、`not_found(未找到)`、`unauthorized(未授权)`、`forbidden(无权限)`和`validate_error(数据验证失败)`。
 
 接口示例：
 
@@ -16,9 +18,11 @@
 }
 ```
 
-带有分页数据的接口会在 `data` 内固定传递 `list` 和 `paginator` 字段，其中 `list` 代表分页后的列表数据，`paginator` 代表分页的数据。
+带有分页数据的接口会在 `data` 内固定传递 `list` 和 `paginator` 字段，其中 `list` 代表分页后的列表数据，`paginator`
+代表分页的数据。
 
-`paginator` 内存在 4 个字段：`current_page(当前页数)` 、`page_size(每页数据条数)`、`total_page(总页数)`、`total_record(总记录条数)`，示例数据如下：
+`paginator` 内存在 4 个字段：`current_page(当前页数)` 、`page_size(每页数据条数)`、`total_page(总页数)`、
+`total_record(总记录条数)`，示例数据如下：
 
 ```json
 {
@@ -64,26 +68,27 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTY0NTY3O
 
 - **接口参数**：
 
-  - 请求参数：
-    - `app_id -> uuid`：路由参数，必填，需要获取的应用 id。
-  - 响应参数：
-    - `id -> uuid`：应用 id，类型为 uuid。
-    - `name -> string`：应用名称。
-    - `icon -> string`：应用图标。
-    - `description -> string`：应用描述。
-    - `published_app_config_id -> uuid`：已发布应用配置 id，如果不存在则为 null。
-    - `drafted_app_config_id -> uuid`：草稿应用配置 id，如果不存在则为 null。
-    - `debug_conversation_id -> uuid`：调试会话记录 id，如果不存在则为 null。
-    - `published_app_config/drafted_app_config -> json`：应用配置信息，涵盖草稿配置、已发布配置，如果没有则为 null，两个配置的变量信息一致。
-      - `id -> uuid`：应用配置 id。
-      - `model_config -> json`：模型配置，类型为 json。
-        - `dialog_round -> int`：携带上下文轮数，类型为非负整型。
-      - `memory_mode -> string`：记忆类型，涵盖长记忆 `long_term_memory` 和 `none` 代表无。
-      - `status -> string`：应用配置的状态，`drafted` 代表草稿、`published` 代表已发布配置。
-      - `updated_at -> int`：应用配置的更新时间。
-      - `created_at -> int`：应用配置的创建时间。
-    - `updated_at -> int`：应用的更新时间。
-    - `created_at -> int`：应用的创建时间。
+    - 请求参数：
+        - `app_id -> uuid`：路由参数，必填，需要获取的应用 id。
+    - 响应参数：
+        - `id -> uuid`：应用 id，类型为 uuid。
+        - `name -> string`：应用名称。
+        - `icon -> string`：应用图标。
+        - `description -> string`：应用描述。
+        - `published_app_config_id -> uuid`：已发布应用配置 id，如果不存在则为 null。
+        - `drafted_app_config_id -> uuid`：草稿应用配置 id，如果不存在则为 null。
+        - `debug_conversation_id -> uuid`：调试会话记录 id，如果不存在则为 null。
+        - `published_app_config/drafted_app_config -> json`：应用配置信息，涵盖草稿配置、已发布配置，如果没有则为
+          null，两个配置的变量信息一致。
+            - `id -> uuid`：应用配置 id。
+            - `model_config -> json`：模型配置，类型为 json。
+                - `dialog_round -> int`：携带上下文轮数，类型为非负整型。
+            - `memory_mode -> string`：记忆类型，涵盖长记忆 `long_term_memory` 和 `none` 代表无。
+            - `status -> string`：应用配置的状态，`drafted` 代表草稿、`published` 代表已发布配置。
+            - `updated_at -> int`：应用配置的更新时间。
+            - `created_at -> int`：应用配置的创建时间。
+        - `updated_at -> int`：应用的更新时间。
+        - `created_at -> int`：应用的创建时间。
 
 - **响应示例**：
 
@@ -124,11 +129,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTY0NTY3O
 
 - **接口参数**：
 
-  - 请求参数：
-    - `app_id -> str`：需要修改配置的应用 id。
-    - `model_config -> json`：模型配置信息。
-      - `dialog_round -> int`：携带上下文轮数，类型为非负整型。
-    - `memory_mode -> string`：记忆类型，涵盖长记忆 `long_term_memory` 和 `none` 代表无。
+    - 请求参数：
+        - `app_id -> str`：需要修改配置的应用 id。
+        - `model_config -> json`：模型配置信息。
+            - `dialog_round -> int`：携带上下文轮数，类型为非负整型。
+        - `memory_mode -> string`：记忆类型，涵盖长记忆 `long_term_memory` 和 `none` 代表无。
 
 - **请求示例**：
 
@@ -159,10 +164,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTY0NTY3O
 
 - **接口参数**：
 
-  - 请求参数：
-    - `app_id -> str`：需要获取长记忆的应用 id。
-  - 响应参数：
-    - `summary -> str`：该应用最新调试会话的长记忆内容。
+    - 请求参数：
+        - `app_id -> str`：需要获取长记忆的应用 id。
+    - 响应参数：
+        - `summary -> str`：该应用最新调试会话的长记忆内容。
 
 - **响应示例**：
 
@@ -170,7 +175,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTY0NTY3O
   {
       "code": "success",
       "data": {
-          "summary": "人类自我介绍为慕小课，并要求人工智能解释LLM（大型语言模型）的概念。人工智能将LLM描述为一种基于深度学习的模型，通常建立在Transformer架构上，用于自然语言处理任务。LLM经历了一个预训练阶段，在那里他们从大量的文本数据中学习语言结构，比如维基百科的文章和书籍。它们利用自我注意机制来有效地处理长程依赖关系。经过预训练后，LLM可以针对特定的应用程序进行微调，使其功能适应文本生成、理解和分类等任务。LLM由于其多功能性和强大的语言理解和生成能力，被广泛应用于虚拟助理、翻译、情绪分析、医疗保健、金融等领域，代表了自然语言处理的前沿技术。"
+          "summary": "人类自我介绍为Eathen，并要求人工智能解释LLM（大型语言模型）的概念。人工智能将LLM描述为一种基于深度学习的模型，通常建立在Transformer架构上，用于自然语言处理任务。LLM经历了一个预训练阶段，在那里他们从大量的文本数据中学习语言结构，比如维基百科的文章和书籍。它们利用自我注意机制来有效地处理长程依赖关系。经过预训练后，LLM可以针对特定的应用程序进行微调，使其功能适应文本生成、理解和分类等任务。LLM由于其多功能性和强大的语言理解和生成能力，被广泛应用于虚拟助理、翻译、情绪分析、医疗保健、金融等领域，代表了自然语言处理的前沿技术。"
       },
       "message": ""
   }
@@ -184,15 +189,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTY0NTY3O
 
 - **接口参数**：
 
-  - 请求参数：
-    - `app_id -> str`：路由参数，需要更新长记忆的应用 id。
-    - `summary -> str`：需要更新的长记忆内容。
+    - 请求参数：
+        - `app_id -> str`：路由参数，需要更新长记忆的应用 id。
+        - `summary -> str`：需要更新的长记忆内容。
 
 - **请求示例**：
 
   ```json
   {
-      "summary": "人类介绍自己叫慕小课，喜欢打篮球。"
+      "summary": "人类介绍自己叫Eathen，喜欢打篮球。"
   }
   ```
 
@@ -214,18 +219,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTY0NTY3O
 
 - **接口参数**：
 
-  - 请求参数：
-    - `app_id -> str`：路由参数，需要调试的 AI 应用 id，格式为 uuid。
-    - `query -> str`：用户发起的提问信息。
-  - 响应参数：
-    - `id -> uuid`：响应消息的 id，类型为 uuid。
-    - `conversation_id -> uuid`：消息关联会话的 id，类型为 uuid。
-    - `query -> str`：人类的输入字符串。
-    - `answer -> str`：AI 的生成内容。
-    - `answer_tokens -> int`：生成内容消耗的 Token 数。
-    - `response_latency -> float`：响应消耗的时间，单位为毫秒。
-    - `updated_at -> int`：消息的更新时间。
-    - `created_at -> int`：消息的创建时间。
+    - 请求参数：
+        - `app_id -> str`：路由参数，需要调试的 AI 应用 id，格式为 uuid。
+        - `query -> str`：用户发起的提问信息。
+    - 响应参数：
+        - `id -> uuid`：响应消息的 id，类型为 uuid。
+        - `conversation_id -> uuid`：消息关联会话的 id，类型为 uuid。
+        - `query -> str`：人类的输入字符串。
+        - `answer -> str`：AI 的生成内容。
+        - `answer_tokens -> int`：生成内容消耗的 Token 数。
+        - `response_latency -> float`：响应消耗的时间，单位为毫秒。
+        - `updated_at -> int`：消息的更新时间。
+        - `created_at -> int`：消息的创建时间。
 
 - **请求示例**：
 
@@ -262,17 +267,17 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTY0NTY3O
 
 - **接口参数**：
 
-  - 请求参数：
-    - `app_id -> str`：路由参数，需要调试的 AI 应用 id，格式为 uuid。
-  - 响应参数：
-    - `id -> uuid`：响应消息的 id，类型为 uuid。
-    - `conversation_id -> uuid`：消息关联会话的 id，类型为 uuid。
-    - `query -> str`：人类的输入字符串。
-    - `answer -> str`：AI 的生成内容。
-    - `answer_tokens -> int`：生成内容消耗的 Token 数。
-    - `response_latency -> float`：响应消耗的时间，单位为毫秒。
-    - `updated_at -> int`：消息的更新时间。
-    - `created_at -> int`：消息的创建时间。
+    - 请求参数：
+        - `app_id -> str`：路由参数，需要调试的 AI 应用 id，格式为 uuid。
+    - 响应参数：
+        - `id -> uuid`：响应消息的 id，类型为 uuid。
+        - `conversation_id -> uuid`：消息关联会话的 id，类型为 uuid。
+        - `query -> str`：人类的输入字符串。
+        - `answer -> str`：AI 的生成内容。
+        - `answer_tokens -> int`：生成内容消耗的 Token 数。
+        - `response_latency -> float`：响应消耗的时间，单位为毫秒。
+        - `updated_at -> int`：消息的更新时间。
+        - `created_at -> int`：消息的创建时间。
 
 - **响应示例**：
 
@@ -303,18 +308,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTY0NTY3O
   }
   ```
 
-
 ### 1.7 [todo]删除特定的调试消息
 
-- **接口说明**：用于删除 AI 应用调试对话过程中指定的消息，该删除会在后端执行软删除操作，并且只有当会话 id 和消息 id 都匹配上时，才会删除对应的调试消息。
+- **接口说明**：用于删除 AI 应用调试对话过程中指定的消息，该删除会在后端执行软删除操作，并且只有当会话 id 和消息 id
+  都匹配上时，才会删除对应的调试消息。
 
 - **接口信息**：`授权`+`POST:/apps/:app_id/messages/:message_id/delete`
 
 - **接口参数**：
 
-  - 请求参数：
-    - `app_id -> uuid`：路由参数，需要删除消息归属的应用 id，格式为 uuid。
-    - `message_id -> uuid`：路由参数，需要删除的消息 id，格式为 uuid。
+    - 请求参数：
+        - `app_id -> uuid`：路由参数，需要删除消息归属的应用 id，格式为 uuid。
+        - `message_id -> uuid`：路由参数，需要删除的消息 id，格式为 uuid。
 
 - **请求示例**：
 

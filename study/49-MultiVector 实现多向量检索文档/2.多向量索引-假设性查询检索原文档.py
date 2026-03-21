@@ -33,6 +33,6 @@ chain = (
 )
 
 hypothetical_questions: HypotheticalQuestions = chain.invoke(
-    Document(page_content="我叫慕小课，我喜欢打篮球，游泳")
+    Document(page_content="我叫Eathen，我喜欢打篮球，游泳")
 )
 print(hypothetical_questions)

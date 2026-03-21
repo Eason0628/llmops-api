@@ -26,4 +26,4 @@ prompt = ChatPromptTemplate.from_messages([
 
 chain = {"query": RunnablePassthrough()} | prompt | structured_llm
 
-print(chain.invoke("我叫慕小课，我喜欢打篮球，游泳。"))
+print(chain.invoke("我叫Eathen，我喜欢打篮球，游泳。"))
