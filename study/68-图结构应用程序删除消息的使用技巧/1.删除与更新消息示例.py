@@ -1,10 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-@Time    : 2024/7/16 11:22
-@Author  : thezehui@gmail.com
-@File    : 1.删除与更新消息示例.py
-"""
+
 from typing import Any
 
 import dotenv
