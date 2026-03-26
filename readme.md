@@ -98,6 +98,16 @@ Document文档加载器
 以TextLoader为例，扩展到 LangChain 封装的其他文档加载器，使用技巧都是一模一样的，在实例化加载器的时候，传入对应的信息（文件路径、网址、目录等），然后调用加载器的
 load() 方法即可一键加载文档。
 
+7-1
+内置插件动态加载逻辑
+1.core->tools->builtin_tools->providers->providers.yaml中定义有哪些服务商，服务商信息包括服务商名称、服务商标签、icon等
+2.对应的服务商文件夹google中的positions.yaml存放对应的服务商包含的工具名称，例如googole服务商有googole_serper、googole_weaviate等工具
+3.创建对应的py脚本，提供对应的服务商的Langchain工具实现，例如googole_serper.py、googole_weaviate.py等
+4.在对应的文件夹内给googole_serper.py、googole_weaviate.py添加对应的google_serper.yaml、googole_weaviate.yaml保存服务商工具信息
+5.internal->lib->helper.py中添加dynamic_import函数，用于动态导入特定模块下的特定功能
+
+
+
 
 
 

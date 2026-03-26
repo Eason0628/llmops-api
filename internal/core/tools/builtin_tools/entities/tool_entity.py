@@ -23,7 +23,8 @@ class ToolParam(BaseModel):
     default: Optional[Any] = None  # 默认值
     min: Optional[float] = None  # 最小值
     max: Optional[float] = None  # 最大值
-    options: list[dict[str, Any]] = Field(default_factory=list)  # 下拉菜单选项列表
+    options: list[dict[str, Any]] = Field(
+        default_factory=list)  # 下拉菜单选项列表，default_factory=list的意思是调用Field的default_factory参数，返回一个空列表,如果不用而使用[]，所有的实例对象会共享同一个列表，一个对象操作会影响到其他对象
 
 
 class ToolEntity(BaseModel):

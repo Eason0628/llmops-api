@@ -28,6 +28,7 @@ class VectorDatabaseService:
         self.client = weaviate.connect_to_weaviate_cloud(
             cluster_url=weaviate_url,
             auth_credentials=Auth.api_key(weaviate_api_key),
+            skip_init_checks=True,
         )
 
         # 2.创建LangChain向量数据库
