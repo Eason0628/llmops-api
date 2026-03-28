@@ -141,7 +141,11 @@ class AppHandler:
     def ping(self):
         """测试应用"""
         # raise FailException("failException")
-        google_serper = self.builtinProviderManager.get_tool("google", "google_serper")()
-        print(google_serper)
-        print(google_serper.invoke("2025年北京男子半程马拉松前3名的成绩是多少"))
-        return {"ping": "pong"}
+
+        # google_serper = self.builtinProviderManager.get_tool("google", "google_serper")()
+        # print(google_serper)
+        # print(google_serper.invoke("2025年北京男子半程马拉松前3名的成绩是多少"))
+
+        providers = self.builtinProviderManager.get_providers()
+        return success_json({"providers": [provider.dict() for provider in providers]})
+        # return {"ping": "pong"}
