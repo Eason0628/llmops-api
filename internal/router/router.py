@@ -8,12 +8,14 @@ from flask import Flask, Blueprint
 from injector import inject
 
 from internal.handler import AppHandler
+from internal.handler import BuiltinToolHandler
 
 
 @inject  # 依赖注入
 @dataclass  # 无论路由下有多少个控制器，都会被自动注册到路由中，起到手动__init__构造函数逐个写控制器的作用
 class Router:
     app_handler: AppHandler
+    builtin_tool_handler: BuiltinToolHandler
 
     # def __init__(self, app_handler: AppHandler):
     #     self.app_handler = app_handler
@@ -33,5 +35,20 @@ class Router:
         bp.add_url_rule("/app/<uuid:id>", methods=["POST"], view_func=self.app_handler.update_app)
         bp.add_url_rule("/app/<uuid:id>/delete", methods=["POST"], view_func=self.app_handler.delete_app)
 
-        # 3.将蓝图注册到app中
+        # 3.内置插件广场模块
+        bp.add_url_rule("/builtin-tools", view_func=lambda: self.builtin_tool_handler.get_builtin_tools())
+        bp.add_url_rule(
+            "/builtin-tools/<string:provider_name>/tools/<string:tool_name>",
+            view_func=self.builtin_tool_handler.get_provider_tool,
+        )
+        bp.add_url_rule(
+            "/builtin-tools/<string:provider_name>/icon",
+            view_func=self.builtin_tool_handler.get_provider_icon,
+        )
+        bp.add_url_rule(
+            "/builtin-tools/categories",
+            view_func=self.builtin_tool_handler.get_categories,
+        )
+
+        # 4.将蓝图注册到app中
         app.register_blueprint(bp)

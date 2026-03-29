@@ -1,3 +1,7 @@
+Flask
+Handler->Controller
+Ruoter->ControllerPath
+
 ## 2-1
 
 python 创建虚拟环境命令:
@@ -106,10 +110,10 @@ load() 方法即可一键加载文档。
 4.在对应的文件夹内给googole_serper.py、googole_weaviate.py添加对应的google_serper.yaml、googole_weaviate.yaml保存服务商工具信息
 5.internal->lib->helper.py中添加dynamic_import函数，用于动态导入特定模块下的特定功能
 
-
-
-
-
+Q:
+lib中add_attribute装饰器的用法python?
+@add_attribute("args_schema", Dalle3ArgsSchema) 因为Delle3内置工具有调用函数，那为什么要绑定一下？
+def dalle3(**kwargs) -> BaseTool:
 
 
 

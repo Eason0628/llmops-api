@@ -3,6 +3,7 @@
 # @Author  : zhaowintoo@gmail.com
 # @File    : __init__.py.py
 from .app_handler import AppHandler
+from .builtin_tool_handler import BuiltinToolHandler
 
 # 为了让这个模块便捷的导出类AppHandler
-__all__ = ["AppHandler"]
+__all__ = ["AppHandler", "BuiltinToolHandler"]
